@@ -1,0 +1,5 @@
+#
+#
+#CC = /opt/local/bin/g++-mp-7
+
+CC = /usr/bin/clang++
