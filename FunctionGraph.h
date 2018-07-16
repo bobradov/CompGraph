@@ -23,11 +23,11 @@ namespace FG {
             virtual ~FunctionGraph() {};
 
             //--- Primary functionality
-            virtual double evaluate()=0;
+            virtual double evaluate() const=0;
 
             //--- Accessors and info
-            const std::set<std::string> &get_dependency_set();
-            bool depends_on(const std::string &var);
+            const std::set<std::string> &get_dependency_set() const;
+            bool depends_on(const std::string &var) const;
 
         protected:
             std::set<std::string> dependency_set;
@@ -42,7 +42,7 @@ namespace FG {
     class ConstField : public FunctionGraph {
         public:
             ConstField(const double &val);
-            double evaluate();
+            double evaluate() const;
             ~ConstField() {};
 
         private:
@@ -53,7 +53,7 @@ namespace FG {
         public:
             VarField(const std::string &name, const double &init_val);
             void set(const double &val);
-            double evaluate();
+            double evaluate() const;
             ~VarField() {};
 
             const std::string var_name;
@@ -64,32 +64,30 @@ namespace FG {
 
     class Sum : public FunctionGraph {
         public:
-            Sum(std::shared_ptr<FG::FunctionGraph> fg1, 
-                std::shared_ptr<FG::FunctionGraph> fg2);
+            Sum(const std::shared_ptr<FG::FunctionGraph> fg1, 
+                const std::shared_ptr<FG::FunctionGraph> fg2);
            
-            double evaluate();
+            double evaluate() const;
 
              ~Sum() {};
 
         private:
-           
-           std::shared_ptr<FG::FunctionGraph> arg1;
-           std::shared_ptr<FG::FunctionGraph> arg2;
+           const std::shared_ptr<FG::FunctionGraph> arg1;
+           const std::shared_ptr<FG::FunctionGraph> arg2;
     };
 
     class Product : public FunctionGraph {
         public:
-            Product(std::shared_ptr<FG::FunctionGraph> fg1, 
-                std::shared_ptr<FG::FunctionGraph> fg2);
+            Product(const std::shared_ptr<FG::FunctionGraph> fg1, 
+                    const std::shared_ptr<FG::FunctionGraph> fg2);
            
-            double evaluate();
+            double evaluate() const;
 
              ~Product() {};
 
         private:
-        
-           std::shared_ptr<FG::FunctionGraph> arg1;
-           std::shared_ptr<FG::FunctionGraph> arg2;
+           const std::shared_ptr<FG::FunctionGraph> arg1;
+           const std::shared_ptr<FG::FunctionGraph> arg2;
     };
 
 
