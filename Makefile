@@ -4,7 +4,7 @@
 
 include Makefile.include
 
-CFLAGS = -std=c++1y
+CFLAGS = -g -std=c++14
 
 INCLUDE = -I$(ROOT)
 

@@ -12,6 +12,7 @@
 #include <memory>
 #include <string>
 #include <set>
+#include <vector>
 
 namespace FG {
 
@@ -31,6 +32,7 @@ namespace FG {
 
         protected:
             std::set<std::string> dependency_set;
+            std::vector<std::shared_ptr<FunctionGraph>> args;
 
         private:
             
@@ -64,30 +66,30 @@ namespace FG {
 
     class Sum : public FunctionGraph {
         public:
-            Sum(const std::shared_ptr<FG::FunctionGraph> fg1, 
-                const std::shared_ptr<FG::FunctionGraph> fg2);
+            Sum(std::shared_ptr<FunctionGraph> fg1, 
+                std::shared_ptr<FunctionGraph> fg2);
            
             double evaluate() const;
 
              ~Sum() {};
 
         private:
-           const std::shared_ptr<FG::FunctionGraph> arg1;
-           const std::shared_ptr<FG::FunctionGraph> arg2;
+           //const std::shared_ptr<FG::FunctionGraph> arg1;
+           //const std::shared_ptr<FG::FunctionGraph> arg2;
     };
 
     class Product : public FunctionGraph {
         public:
-            Product(const std::shared_ptr<FG::FunctionGraph> fg1, 
-                    const std::shared_ptr<FG::FunctionGraph> fg2);
+            Product(const std::shared_ptr<FunctionGraph> fg1, 
+                    const std::shared_ptr<FunctionGraph> fg2);
            
             double evaluate() const;
 
              ~Product() {};
 
         private:
-           const std::shared_ptr<FG::FunctionGraph> arg1;
-           const std::shared_ptr<FG::FunctionGraph> arg2;
+           //const std::shared_ptr<FunctionGraph> arg1;
+           //const std::shared_ptr<FunctionGraph> arg2;
     };
 
 
