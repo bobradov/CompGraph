@@ -13,6 +13,8 @@
 #include <string>
 #include <set>
 #include <vector>
+#include <map>
+#include <stack>
 
 namespace FG {
 
@@ -20,7 +22,7 @@ namespace FG {
     class FunctionGraph {
         public:
             //--- Construction / Destruction
-            FunctionGraph() {};
+            FunctionGraph(const std::string &name_);
             virtual ~FunctionGraph() {};
 
             //--- Primary functionality
@@ -29,10 +31,17 @@ namespace FG {
             //--- Accessors and info
             const std::set<std::string> &get_dependency_set() const;
             bool depends_on(const std::string &var) const;
+            bool assign_var(const std::string &name, double &val);
+            const std::string &get_name() { return name; }
+
+            void DFS();
+
+            std::vector<std::unique_ptr<FunctionGraph>> args;
 
         protected:
             std::set<std::string> dependency_set;
-            std::vector<std::shared_ptr<FunctionGraph>> args;
+            //std::vector<std::unique_ptr<FunctionGraph>> args;
+            const std::string name;
 
         private:
             
@@ -43,7 +52,7 @@ namespace FG {
 
     class ConstField : public FunctionGraph {
         public:
-            ConstField(const double &val);
+            ConstField(const std::string &name, const double &val);
             double evaluate() const;
             ~ConstField() {};
 
@@ -53,43 +62,56 @@ namespace FG {
 
     class VarField : public FunctionGraph {
         public:
-            VarField(const std::string &name, const double &init_val);
-            void set(const double &val);
+            VarField(const std::string &name_, 
+                     const std::string &var_name_, 
+                     const double &init_val_);
+            void set(const double &val_);
+            double &get() { return value; }
             double evaluate() const;
             ~VarField() {};
 
             const std::string var_name;
 
-        private:
+        protected:
             double value;
     };
 
     class Sum : public FunctionGraph {
         public:
-            Sum(std::shared_ptr<FunctionGraph> fg1, 
-                std::shared_ptr<FunctionGraph> fg2);
+            Sum(const std::string &name_,
+                      std::unique_ptr<FunctionGraph> &&fg1_, 
+                      std::unique_ptr<FunctionGraph> &&fg2_);
            
             double evaluate() const;
 
              ~Sum() {};
 
         private:
-           //const std::shared_ptr<FG::FunctionGraph> arg1;
-           //const std::shared_ptr<FG::FunctionGraph> arg2;
     };
 
     class Product : public FunctionGraph {
         public:
-            Product(const std::shared_ptr<FunctionGraph> fg1, 
-                    const std::shared_ptr<FunctionGraph> fg2);
+            Product(const std::string &name_,
+                          std::unique_ptr<FunctionGraph> &&fg1_, 
+                          std::unique_ptr<FunctionGraph> &&fg2_);
            
             double evaluate() const;
 
              ~Product() {};
 
         private:
-           //const std::shared_ptr<FunctionGraph> arg1;
-           //const std::shared_ptr<FunctionGraph> arg2;
+    };
+
+    class FunctionIter {
+        public:
+            FunctionIter(FunctionGraph *root_);
+            FunctionGraph *next();
+        private:
+            //const std::unique_ptr<FunctionGraph> &root;
+            FunctionGraph *root;
+            std::stack<FunctionGraph*> rec_stack;
+            FunctionGraph *cur_ptr;
+
     };
 
 
