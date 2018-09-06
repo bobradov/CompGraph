@@ -5,6 +5,7 @@
 //+----------------------------------------------------------
 
 #include "FunctionGraph.h"
+#include "FunctionIter.h"
 #include <iostream>
 
 int main(int argc, char** argv) {
@@ -50,10 +51,16 @@ int main(int argc, char** argv) {
     */
 
    FG::FunctionIter fiter(pf1.get());
-   for(FG::FunctionGraph *fp = fiter.next(); 
-            fp !=nullptr; 
-            fp = fiter.next()) {
-                std::cout << "iter: " << fp->get_name() << std::endl;
+   for(FG::FunctionGraph *fp = fiter.begin(); 
+            fp != fiter.end(); 
+            fp = ++fiter) 
+            {
+               // std::cout << "checking depth ..." << std::endl;
+                const int cur_depth = fiter.get_depth();
+               // std::cout << " done checking depth." << std::endl;
+                std::cout << "iter: " << fp->get_name() 
+                          << " depth: " << cur_depth
+                          << std::endl;
             }
     
    

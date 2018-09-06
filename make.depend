@@ -1,2 +1,3 @@
 FunctionGraph.o: FunctionGraph.cpp FunctionGraph.h
-test1.o: test1.cpp FunctionGraph.h
+FunctionIter.o: FunctionIter.cpp FunctionIter.h
+test1.o: test1.cpp FunctionGraph.h FunctionIter.h

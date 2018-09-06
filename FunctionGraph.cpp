@@ -56,26 +56,6 @@ bool FunctionGraph::assign_var(const std::string &name_,
     return false; 
 }
 
-
-FunctionIter::FunctionIter(FunctionGraph *root_) : root(root_) {
-        rec_stack.push(root);
-}
-
-FunctionGraph* FunctionIter::next() {
-    if (rec_stack.empty()) return nullptr;
-
-    cur_ptr = rec_stack.top();
-    rec_stack.pop();
-
-    for(auto it  = cur_ptr->args.begin();
-             it != cur_ptr->args.end();
-           ++it) {
-                     rec_stack.push(it->get());
-    }
-
-    return cur_ptr;
-}
-
 void FunctionGraph::DFS() {
     std::stack<FunctionGraph*> recstack;
     recstack.push(this);
@@ -89,9 +69,10 @@ void FunctionGraph::DFS() {
                  ++it) {
                      recstack.push(it->get());
         }
-    }
-    
+    }  
 }
+
+
 
 //--- ConstField class
 

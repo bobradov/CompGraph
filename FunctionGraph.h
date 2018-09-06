@@ -8,6 +8,8 @@
 //|
 //+----------------------------------------------------------
 
+#ifndef FUNCTIONGRAPH_H
+#define FUNCTIONGRAPH_H
 
 #include <memory>
 #include <string>
@@ -15,6 +17,7 @@
 #include <vector>
 #include <map>
 #include <stack>
+
 
 namespace FG {
 
@@ -102,18 +105,8 @@ namespace FG {
         private:
     };
 
-    class FunctionIter {
-        public:
-            FunctionIter(FunctionGraph *root_);
-            FunctionGraph *next();
-        private:
-            //const std::unique_ptr<FunctionGraph> &root;
-            FunctionGraph *root;
-            std::stack<FunctionGraph*> rec_stack;
-            FunctionGraph *cur_ptr;
-
-    };
-
-
+   
 
 };
+
+#endif

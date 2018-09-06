@@ -18,7 +18,7 @@ LINKLIBS = -lstdc++
 
 all: test1
 
-OBJS = FunctionGraph.o
+OBJS = FunctionGraph.o FunctionIter.o
 
 test1: test1.o $(OBJS)
 	$(CC) $(BIND_AT_LOAD) -o test1 test1.o \
