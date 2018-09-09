@@ -21,6 +21,7 @@
 
 namespace FG {
 
+    class FunctionIter;
 
     class FunctionGraph {
         public:
@@ -37,13 +38,19 @@ namespace FG {
             bool assign_var(const std::string &name, double &val);
             const std::string &get_name() { return name; }
 
-            void DFS();
+            //--- Iteration
 
-            std::vector<std::unique_ptr<FunctionGraph>> args;
+            // Iterate through tree of function graph
+            FunctionIter begin();
+            FunctionIter end();
+
+            // Iterate through arguments of single node
+            std::vector<std::unique_ptr<FunctionGraph>>::iterator argBegin();
+            std::vector<std::unique_ptr<FunctionGraph>>::iterator argEnd();
 
         protected:
             std::set<std::string> dependency_set;
-            //std::vector<std::unique_ptr<FunctionGraph>> args;
+            std::vector<std::unique_ptr<FunctionGraph>> args;
             const std::string name;
 
         private:

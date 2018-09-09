@@ -42,7 +42,6 @@ int main(int argc, char** argv) {
     pf1->assign_var("x", xref);
     std::cout << "got xref: " << xref << std::endl;
 
-    pf1->DFS();
 
     /*
     pf1->assign_var("x", 10.0);
@@ -50,18 +49,21 @@ int main(int argc, char** argv) {
     std::cout << "Got res4: " << res4 << std::endl;
     */
 
-   FG::FunctionIter fiter(pf1.get());
-   for(FG::FunctionGraph *fp = fiter.begin(); 
-            fp != fiter.end(); 
-            fp = ++fiter) 
-            {
-               // std::cout << "checking depth ..." << std::endl;
-                const int cur_depth = fiter.get_depth();
-               // std::cout << " done checking depth." << std::endl;
-                std::cout << "iter: " << fp->get_name() 
-                          << " depth: " << cur_depth
-                          << std::endl;
-            }
+   std::cout << "Using begin, end:" << std::endl;
+   for(FG::FunctionIter fit = pf1->begin(); 
+                        fit != pf1->end(); 
+                                ++fit) 
+    {
+        const int cur_depth = fit.get_depth();
+        std::cout << "iter: "   << (*fit)->get_name() 
+                  << " depth: " << cur_depth
+                  << std::endl;
+    }
+
+    std::cout << "Using foreach: " << std::endl;
+    for(auto cur : *pf1) {
+        std::cout << cur->get_name() << std::endl;
+    }
     
    
 }

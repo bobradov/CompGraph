@@ -22,16 +22,18 @@ namespace FG {
     class FunctionIter {
             public:
                 FunctionIter(FunctionGraph *root_);
-                FunctionGraph *begin();
-                FunctionGraph *end();
-                FunctionGraph *next();
-                FunctionGraph *operator++();
+                FunctionIter &next();
+                FunctionIter &operator++();
+                FunctionGraph *operator*();
+                FunctionGraph *operator*() const;
                 int get_depth() const;
+                bool operator==(FunctionIter const &other) const;
+                bool operator!=(FunctionIter const &other) const;
 
             private:
+                FunctionGraph *cur_ptr;
                 FunctionGraph *root;
                 std::stack<stack_elem> rec_stack;
-                FunctionGraph *cur_ptr;
 
     };
 

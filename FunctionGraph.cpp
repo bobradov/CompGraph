@@ -9,6 +9,7 @@
 
 
 #include "FunctionGraph.h"
+#include "FunctionIter.h"
 #include <iostream>
 
 
@@ -36,6 +37,18 @@ bool FunctionGraph::depends_on(const std::string &var_) const {
     }
 }
 
+
+
+// Function for assigning value to a variable 
+// Recursisvely searches for a VarField with the same
+// name as the argument
+// Can only change values of VarFields, other function
+// types (such as ConstField) are ignored.
+// If multiple VarFields with the same name are used,
+// only the first one with the matching name is modified.
+// N.B. Probably should not allow multiple VarFields with
+// the same name.
+
 bool FunctionGraph::assign_var(const std::string &name_, 
                                double &val_) {
 
@@ -56,23 +69,25 @@ bool FunctionGraph::assign_var(const std::string &name_,
     return false; 
 }
 
-void FunctionGraph::DFS() {
-    std::stack<FunctionGraph*> recstack;
-    recstack.push(this);
 
-    while(!recstack.empty()) {
-        FunctionGraph *cur_ptr = recstack.top();
-        std::cout << "At: " << cur_ptr->get_name() << std::endl;
-        recstack.pop();
-        for(auto it  = cur_ptr->args.begin();
-                 it != cur_ptr->args.end();
-                 ++it) {
-                     recstack.push(it->get());
-        }
-    }  
+FunctionIter FunctionGraph::begin() {
+    return FunctionIter(this);
 }
 
+FunctionIter FunctionGraph::end() {
+    return FunctionIter(nullptr);
+}
 
+std::vector<std::unique_ptr<FunctionGraph>>::iterator 
+FunctionGraph::argBegin() {
+    return args.begin();
+}
+
+std::vector<std::unique_ptr<FunctionGraph>>::iterator 
+FunctionGraph::argEnd() {
+    return args.end();
+}            
+       
 
 //--- ConstField class
 
