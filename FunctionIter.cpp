@@ -45,16 +45,22 @@ FunctionIter& FunctionIter::next() {
         return *this;
     }
 
-    int cur_depth = rec_stack.top().second;
-    cur_ptr = rec_stack.top().first;
+    int cur_depth = std::get<1>(rec_stack.top());
+    cur_ptr = std::get<0>(rec_stack.top());
     rec_stack.pop();
    
     
     for(auto it  = cur_ptr->argBegin();
              it != cur_ptr->argEnd();
            ++it) {
+                // Each stack element contains:
+                // 1. Pointer to current child
+                // 2. Depth of child
+                // 3. Pointer to parent
                 rec_stack.push(stack_elem(it->get(), 
-                                cur_depth+1));
+                                          cur_depth+1,
+                                          cur_ptr)
+                               );
     }
     
     // Did we find any next elements?
@@ -67,7 +73,7 @@ FunctionIter& FunctionIter::next() {
         cur_ptr = nullptr;
         return *this;
     } else {
-        cur_ptr = rec_stack.top().first;
+        cur_ptr = std::get<0>(rec_stack.top());
         return *this;
     }
     
@@ -79,6 +85,11 @@ FunctionIter &FunctionIter::operator++() {
 }
 
 int FunctionIter::get_depth() const {
-    return rec_stack.top().second;
+    return std::get<1>(rec_stack.top());
 }
+
+FunctionGraph *FunctionIter::get_parent() const {
+    return std::get<2>(rec_stack.top());
+}
+
 

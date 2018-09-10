@@ -11,7 +11,9 @@
 #include "FunctionGraph.h"
 #include "FunctionIter.h"
 #include <iostream>
-
+#include <sstream>
+#include <string>
+#include <map>
 
 
 using namespace FG;
@@ -88,6 +90,54 @@ FunctionGraph::argEnd() {
     return args.end();
 }            
        
+std::string FunctionGraph::toString() {
+
+
+    std::ostringstream os;
+    const int h_pad = 4;
+    const int v_pad = 4;
+    std::map<std::string, int> node_depth;
+    node_depth[get_name()] = 0;
+
+    for(FunctionIter fit = this->begin(); 
+                     fit != this->end(); 
+                   ++fit) 
+    {
+        const int cur_depth = fit.get_depth();
+        FG::FunctionGraph* parent = fit.get_parent();
+        std::string parent_name;
+        if(parent == nullptr) 
+            parent_name = "none";
+        else
+            parent_name = parent->get_name();
+
+        // Record (name, depth) pair in node_depth map
+        // Needed to look up depths of parents
+
+        // Insert vertical lines
+        // Insert at the correct horizontal position: depth-dep
+        const std::string cur_name = (*fit)->get_name();
+        if(cur_name != get_name()) {
+            for(int i=0; i < v_pad; ++i) {
+                for(int j=0; j < h_pad * (cur_depth-1); ++j) {
+                    os << " ";
+                }
+                os << "|" << std::endl;
+            }
+        
+
+            // Pad with "-" signs; n_pad for each depth level
+            for(int i=0; i < h_pad * (cur_depth-1); ++i) os << " ";
+
+            for(int i=0; i < h_pad-1; ++i) os << "-";
+        }
+
+        // Now actually add the node name
+        os << (*fit)->get_name() << std::endl;
+    }
+
+    return os.str();
+}
 
 //--- ConstField class
 

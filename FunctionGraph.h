@@ -48,6 +48,11 @@ namespace FG {
             std::vector<std::unique_ptr<FunctionGraph>>::iterator argBegin();
             std::vector<std::unique_ptr<FunctionGraph>>::iterator argEnd();
 
+
+            //--- I/O
+            std::string toString();
+
+
         protected:
             std::set<std::string> dependency_set;
             std::vector<std::unique_ptr<FunctionGraph>> args;

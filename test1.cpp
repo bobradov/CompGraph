@@ -8,6 +8,7 @@
 #include "FunctionIter.h"
 #include <iostream>
 
+
 int main(int argc, char** argv) {
 
     
@@ -55,8 +56,16 @@ int main(int argc, char** argv) {
                                 ++fit) 
     {
         const int cur_depth = fit.get_depth();
+        FG::FunctionGraph* parent = fit.get_parent();
+        std::string parent_name;
+        if(parent == nullptr) 
+            parent_name = "none";
+        else
+            parent_name = parent->get_name();
+
         std::cout << "iter: "   << (*fit)->get_name() 
                   << " depth: " << cur_depth
+                  << " parent: " << parent_name
                   << std::endl;
     }
 
@@ -64,6 +73,10 @@ int main(int argc, char** argv) {
     for(auto cur : *pf1) {
         std::cout << cur->get_name() << std::endl;
     }
+
+    std::cout << "Testing toString:" << std::endl;
+    std::string outs = pf1->toString();
+    std::cout << outs << std::endl;
     
    
 }
